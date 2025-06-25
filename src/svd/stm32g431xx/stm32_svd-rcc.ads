@@ -1979,15 +1979,15 @@ package STM32_SVD.RCC is
       B_0x1 => 1);
 
    --  I2C4 reset Set and cleared by software
-   type RCC_APB1RSTR2_I2C4RST_Field is
-     (--  No effect
-      B_0x0,
-      --  Reset I2C4
-      B_0x1)
-     with Size => 1;
-   for RCC_APB1RSTR2_I2C4RST_Field use
-     (B_0x0 => 0,
-      B_0x1 => 1);
+   subtype RCC_APB1RSTR2_I2C4RST_Field is Boolean;
+--       (--  No effect
+--        B_0x0,
+--        --  Reset I2C4
+--        B_0x1)
+--       with Size => 1;
+--     for RCC_APB1RSTR2_I2C4RST_Field use
+--       (B_0x0 => 0,
+--        B_0x1 => 1);
 
    --  UCPD1 reset Set and cleared by software.
    type RCC_APB1RSTR2_UCPD1RST_Field is
@@ -2005,7 +2005,7 @@ package STM32_SVD.RCC is
       --  Low-power UART 1 reset Set and cleared by software.
       LPUART1RST    : RCC_APB1RSTR2_LPUART1RST_Field := STM32_SVD.RCC.B_0x0;
       --  I2C4 reset Set and cleared by software
-      I2C4RST       : RCC_APB1RSTR2_I2C4RST_Field := STM32_SVD.RCC.B_0x0;
+      I2C4RST       : RCC_APB1RSTR2_I2C4RST_Field := False;
       --  unspecified
       Reserved_2_7  : HAL.UInt6 := 16#0#;
       --  UCPD1 reset Set and cleared by software.
