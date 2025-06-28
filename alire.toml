@@ -1,4 +1,4 @@
-name = "stm32_hal"
+name = "stm32g4_hal"
 description = "stm32 : devices, drivers, svd"
 version = "0.1.0"
 licenses = "BSD-3-Clause"
@@ -11,6 +11,7 @@ tags = ["embedded", "stm32", "devices", "drivers", "svd"]
 
 [[depends-on]]
 cortex_m = "0.5.0"
+light_tasking_stm32g431 = "*"
 #hal = "0.3.0"
 
 [configuration]
@@ -26,9 +27,6 @@ output_dir = "config"
 default = "stm32g431xx"
 type = "Enum"
 values = [
-    "stm32f746",
-    "stm32f429",
-    "stm32f407xx",
     "stm32g431xx",
 ]
 
@@ -37,5 +35,5 @@ values = [
 cortex_m.core = "m7f"
 
 [[pins]]
-gnat_arm_elf = { version='12.2.1' }
 hal = { url="https://github.com/Fabien-Chouteau/hal.git", branch="release/0.4" }
+#light_tasking_stm32g431 = { path = "../light_tasking_stm32g431_14" }
