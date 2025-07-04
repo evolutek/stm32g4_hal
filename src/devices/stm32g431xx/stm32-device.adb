@@ -607,7 +607,7 @@ package body STM32.Device is
                    UInt32 (RCC_Periph.RCC_PLLCFGR.PLLN);
                Pllp       : constant
                  UInt32 :=
-                   (UInt32 (Boolean'Pos (RCC_Periph.RCC_PLLCFGR.PLLP)) + 1) * 2;  --  FIX:This is incorrect
+                   (UInt32 (Boolean'Pos (RCC_Periph.RCC_PLLCFGR.PLLP)) * 10) + 7;  --  FIX:This is incorrect
                Pllvco     : UInt32;
             begin
                if not HSE_Source then

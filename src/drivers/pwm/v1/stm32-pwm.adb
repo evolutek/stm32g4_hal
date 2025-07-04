@@ -176,7 +176,7 @@ package body STM32.PWM is
       Point     : GPIO_Point;
       PWM_AF    : GPIO_Alternate_Function;
       Polarity  : Timer_Output_Compare_Polarity := High;
-      AF_Speed  : Pin_Output_Speeds := Speed_100MHz)
+      AF_Speed  : Pin_Output_Speeds := Speed_120MHz)
    is
    begin
       This.Channel := Channel;
@@ -214,7 +214,7 @@ package body STM32.PWM is
       Idle_State               : Timer_Capture_Compare_State;
       Complementary_Polarity   : Timer_Output_Compare_Polarity;
       Complementary_Idle_State : Timer_Capture_Compare_State;
-      AF_Speed                 : Pin_Output_Speeds := Speed_100MHz)
+      AF_Speed                 : Pin_Output_Speeds := Speed_120MHz)
    is
    begin
       This.Channel := Channel;

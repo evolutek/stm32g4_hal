@@ -97,7 +97,7 @@ package STM32.PWM is
       Point     : GPIO_Point;
       PWM_AF    : GPIO_Alternate_Function;
       Polarity  : Timer_Output_Compare_Polarity := High;
-      AF_Speed  : Pin_Output_Speeds := Speed_100MHz)
+      AF_Speed  : Pin_Output_Speeds := Speed_120MHz)
      with Post => not Output_Enabled (This) and then
                   Current_Duty_Cycle (This) = 0;
    --  Initializes the channel on the timer associated with This modulator,
@@ -118,7 +118,7 @@ package STM32.PWM is
       Idle_State               : Timer_Capture_Compare_State;
       Complementary_Polarity   : Timer_Output_Compare_Polarity;
       Complementary_Idle_State : Timer_Capture_Compare_State;
-      AF_Speed                 : Pin_Output_Speeds := Speed_100MHz)
+      AF_Speed                 : Pin_Output_Speeds := Speed_120MHz)
      with Post => not Output_Enabled (This) and then
                   not Complementary_Output_Enabled (This) and then
                   Current_Duty_Cycle (This) = 0;

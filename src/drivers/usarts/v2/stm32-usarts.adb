@@ -141,26 +141,54 @@ package body STM32.USARTs is
    -- Set_Baud_Rate --
    -------------------
 
-   procedure Set_Baud_Rate (This : in out USART; To : Baud_Rates)
-   is
-      Clock        : constant UInt32 := APB_Clock (This);
-      Over_By_8    : constant Boolean := This.Periph.CR1.OVER8;
-      Int_Scale    : constant UInt32 := (if Over_By_8 then 2 else 4);
-      Int_Divider  : constant UInt32 := (25 * Clock) / (Int_Scale * To);
-      Frac_Divider : constant UInt32 := Int_Divider rem 100;
-   begin
-      --  the integer part of the divi
-      if Over_By_8 then
-         This.Periph.BRR.DIV_Fraction :=
-           BRR_DIV_Fraction_Field (((Frac_Divider * 8) + 50) / 100 mod 8);
-      else
-         This.Periph.BRR.DIV_Fraction :=
-           BRR_DIV_Fraction_Field (((Frac_Divider * 16) + 50) / 100 mod 16);
-      end if;
+--    procedure Set_Baud_Rate (This : in out USART; To : Baud_Rates)
+--    is
+--       Clock        : constant UInt32 := APB_Clock (This);
+--       Over_By_8    : constant Boolean := This.Periph.CR1.OVER8;
+--       Int_Scale    : constant UInt32 := (if Over_By_8 then 2 else 4);
+--       Int_Divider  : constant UInt32 := (25 * Clock) / (Int_Scale * To);
+--       Frac_Divider : constant UInt32 := Int_Divider rem 100;
+--    begin
+--       --  the integer part of the divi
+--       if Over_By_8 then
+--          This.Periph.BRR.DIV_Fraction :=
+--            BRR_DIV_Fraction_Field (((Frac_Divider * 8) + 50) / 100 mod 8);
+--       else
+--          This.Periph.BRR.DIV_Fraction :=
+--            BRR_DIV_Fraction_Field (((Frac_Divider * 16) + 50) / 100 mod 16);
+--       end if;
+-- 
+--       This.Periph.BRR.DIV_Mantissa :=
+--         BRR_DIV_Mantissa_Field (Int_Divider / 100);
+--    end Set_Baud_Rate;
 
+procedure Set_Baud_Rate (This : in out USART; To : Baud_Rates)
+is
+   Clock           : constant HAL.UInt32 := APB_Clock (This);
+   Over_By_8       : constant Boolean := This.Periph.CR1.OVER8;
+
+   -- Assuming we can read a prescaler setting index from the peripheral
+   Prescaler_Index : constant HAL.UInt32 := HAL.UInt32 (This.Periph.PRESC.PRESCALER); -- e.g., 0..11
+   Prescaler_Value : constant HAL.UInt32 := Shift_Left (1, Natural (Prescaler_Index));
+
+   Scaled_Clock    : constant UInt32 := Clock / Prescaler_Value;
+   BRR_Value       : UInt32;
+begin
+   -- Calculate BRR using macro logic
+   if Over_By_8 then
+      BRR_Value := ((Scaled_Clock * 2) + (To / 2)) / To;
       This.Periph.BRR.DIV_Mantissa :=
-        BRR_DIV_Mantissa_Field (Int_Divider / 100);
-   end Set_Baud_Rate;
+        BRR_DIV_Mantissa_Field (BRR_Value / 8);
+      This.Periph.BRR.DIV_Fraction :=
+        BRR_DIV_Fraction_Field (BRR_Value mod 8);
+   else
+      BRR_Value := (Scaled_Clock + (To / 2)) / To;
+      This.Periph.BRR.DIV_Mantissa :=
+        BRR_DIV_Mantissa_Field (BRR_Value / 16);
+      This.Periph.BRR.DIV_Fraction :=
+        BRR_DIV_Fraction_Field (BRR_Value mod 16);
+   end if;
+end Set_Baud_Rate;
 
    ---------------------------
    -- Set_Oversampling_Mode --

@@ -98,19 +98,19 @@ package STM32.GPIO is
 
    for Pin_Output_Types use (Push_Pull => 0, Open_Drain => 1);
 
-   type Pin_Output_Speeds is (Speed_2MHz,  Speed_25MHz, Speed_50MHz, Speed_100MHz)
+   type Pin_Output_Speeds is (Speed_5MHz,  Speed_25MHz, Speed_50MHz, Speed_120MHz)
      with Size => 2;
 
    for Pin_Output_Speeds use
-     (Speed_2MHz   => 0,  -- low
+     (Speed_5MHz   => 0,  -- low
       Speed_25MHz  => 1,  -- medium
       Speed_50MHz  => 2,  -- high
-      Speed_100MHz => 3); -- very high
+      Speed_120MHz => 3); -- very high
 
-   Speed_Low       : Pin_Output_Speeds renames Speed_2MHz;
+   Speed_Low       : Pin_Output_Speeds renames Speed_5MHz;
    Speed_Medium    : Pin_Output_Speeds renames Speed_25MHz;
    Speed_High      : Pin_Output_Speeds renames Speed_50MHz;
-   Speed_Very_High : Pin_Output_Speeds renames Speed_100MHz;
+   Speed_Very_High : Pin_Output_Speeds renames Speed_120MHz;
 
    type Internal_Pin_Resistors is (Floating, Pull_Up, Pull_Down)
      with Size => 2;
